@@ -7,7 +7,7 @@ This project demonstrates a Security Operations Center (SOC) automation pipeline
 
 ## Architecture
 
-![Architecture](architecture/architecture.png)
+![Architecture](Architecture/architecture.png)
 
 ## Workflow
 
