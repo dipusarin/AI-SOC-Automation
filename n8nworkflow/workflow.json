@@ -1,1 +1,195 @@
-
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ce4f3164-e436-4839-b925-a297a940f8fa",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -336,
+        16
+      ],
+      "id": "19942164-f255-437a-88ca-b00308ad0939",
+      "name": "Webhook",
+      "webhookId": "ce4f3164-e436-4839-b925-a297a940f8fa"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/generate",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{\n{\n  \"model\": \"mistral\",\n  \"prompt\": \"You are a SOC analyst. Analyze this Splunk alert and provide structured output.\\n\\nAlert Name: \" + ($json.body.search_name || \"N/A\") + \"\\n\\nEvent Data:\\n\" + JSON.stringify($json.body.result || {}, null, 2) + \"\\n\\nInclude:\\n- Threat Summary\\n- MITRE ATT&CK Techniques\\n- Threat Intelligence Context\\n- Severity Assessment\\n- Investigation Steps\\n- Recommended Response\",\n  \"stream\": false\n}\n}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        80,
+        16
+      ],
+      "id": "a69bd907-87ba-476f-b039-ee057495865d",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AKLS4JFUH",
+          "mode": "list",
+          "cachedResultName": "alerts"
+        },
+        "text": "={{ $json.response }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        400,
+        16
+      ],
+      "id": "0d833fd1-c9a8-4013-840f-2da8714ff615",
+      "name": "Send a message",
+      "webhookId": "681b82c9-a178-4333-b9f7-6bf6a4c19a8c",
+      "credentials": {
+        "slackApi": {
+          "id": "qHrzdrHYnRxxEBBd",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.abuseipdb.com/api/v2/check",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "ipAddress",
+              "value": "118.25.6.39"
+            },
+            {
+              "name": "maxAgeInDays",
+              "value": "1"
+            },
+            {
+              "name": "verbose"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Key",
+              "value": "686c0084825559772b8049114cf236d4ff913144ea7368674689affbaea98c4766af367fd206d63b"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        32,
+        -176
+      ],
+      "id": "a27457da-269e-4682-b2e9-431e73bef4b1",
+      "name": "IP-Enrichment"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "accept-encoding": "identity",
+            "content-length": "403",
+            "host": "10.0.0.22:5678",
+            "content-type": "application/json",
+            "user-agent": "Splunk/51D9884D-A7FE-4E01-B60C-696B9A5AF857",
+            "connection": "close"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "sid": "scheduler__dipesh__search__RMD5308afe8265326428_at_1772941440_39",
+            "search_name": "Test-BruteForce",
+            "app": "search",
+            "owner": "dipesh",
+            "results_link": "http://mydfir-splunk:8000/app/search/@go?sid=scheduler__dipesh__search__RMD5308afe8265326428_at_1772941440_39",
+            "result": {
+              "_time": "1772749573.150",
+              "ComputerName": "DESKTOP-R3EIIQN",
+              "user": "mydfir",
+              "src_ip": "127.0.0.1",
+              "count": "1"
+            }
+          },
+          "webhookUrl": "http://localhost:5678/webhook-test/ce4f3164-e436-4839-b925-a297a940f8fa",
+          "executionMode": "test"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IP-Enrichment": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "f83d4f32-de81-4434-9a12-dced769e899a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c8dc605fc338c08b64eb9742af2ef8c8075c1fc2c80478b13280727f1aff974a"
+  },
+  "id": "XQmcLVk7LSDbhtZl",
+  "tags": []
+}
