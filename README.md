@@ -38,3 +38,8 @@ Detects brute-force login attempts.
 - IP threat intelligence enrichment
 - AI-generated incident analysis
 - Automated SOC notifications
+
+## Demo
+
+### Splunk Alert
+![Splunk Alert](Screenshots/splunk-alert.png)
