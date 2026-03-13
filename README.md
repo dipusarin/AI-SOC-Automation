@@ -43,3 +43,12 @@ Detects brute-force login attempts.
 
 ### Splunk Alert
 ![Splunk Alert](Screenshots/splunk-alert.png)
+
+### Splunk Query
+![Splunk Alert](Screenshots/splunk_query.png)
+
+### n8n Workflow
+![n8n Workflow](screenshots/n8n_automation.png)
+
+### SOC Alert in Slack
+![Slack Alert](screenshots/slack_response.png)
