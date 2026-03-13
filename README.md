@@ -52,3 +52,20 @@ Detects brute-force login attempts.
 
 ### SOC Alert in Slack
 ![Slack Alert](Screenshots/slack_response.png)
+
+## Demo Workflow
+
+1. A brute-force login attempt occurs on a Windows machine.
+2. Splunk detects multiple failed authentication attempts.
+3. Splunk alert sends event data to n8n via webhook.
+4. n8n enriches the source IP using AbuseIPDB.
+5. Ollama analyzes the alert and generates a SOC incident report.
+6. The alert is automatically sent to Slack.
+
+## Setup
+
+1. Install Splunk
+2. Configure Splunk alert webhook
+3. Import the n8n workflow
+4. Install Ollama and the Mistral model
+5. Configure Slack webhook
